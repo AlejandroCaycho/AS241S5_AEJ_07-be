@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: reactive-app
+  r2dbc:
+    url: r2dbc:postgresql://ep-nameless-silence-am6npcj1-pooler.c-5.us-east-1.aws.neon.tech/neondb
+    username: neondb_owner
+    password: npg_1nTSx8sJvPur
+    properties:
+      sslMode: REQUIRE
+
+api:
+    openrouter:
+      url: https://openrouter.ai/api/v1
+      key: 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
+      model: qwen/qwen3.6-plus:free
+
+    mistral:
+      url: https://api.mistral.ai/v1
+      key: VeeuiQzVhVNNh4b3Hey5Jb8KiBMRJy3Y
+      model: mistral-small-latest
