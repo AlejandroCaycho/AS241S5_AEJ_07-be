@@ -7,6 +7,7 @@ import reactive_app.service.IAService;
 import reactor.core.publisher.Flux;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/ia")
 @RequiredArgsConstructor
 public class IAController {

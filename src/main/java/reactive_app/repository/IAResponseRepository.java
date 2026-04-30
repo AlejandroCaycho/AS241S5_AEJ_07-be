@@ -9,4 +9,6 @@ public interface IAResponseRepository extends ReactiveCrudRepository<IAResponse,
     Flux<IAResponse> findAllByOrderByFechaDesc();
 
     Flux<IAResponse> findBySource(String source);
+
+    Flux<IAResponse> findTop6BySourceOrderByFechaDesc(String source);
 }
