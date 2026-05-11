@@ -159,7 +159,6 @@ public class IAService {
         if (value == null) {
             return "";
         }
-
         return value.replaceAll("[\\x{1F300}-\\x{1FAFF}\\x{2600}-\\x{27BF}]", "").trim();
     }
 
@@ -179,5 +178,39 @@ public class IAService {
 
     public Flux<IAResponse> historialPorFuente(String source) {
         return repository.findBySource(source);
+    }
+
+    public Flux<IAResponse> actualizarPrompt(Long id, String nuevoPrompt) {
+        String normalizedPrompt = nuevoPrompt == null ? "" : nuevoPrompt.trim();
+
+        if (normalizedPrompt.isBlank()) {
+            return Flux.error(new IllegalArgumentException("El nuevo prompt no puede estar vacio."));
+        }
+
+        Mono<IAResponse> actualizadoOpenRouter = repository.findById(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Registro no encontrado con id: " + id)))
+                .flatMap(existing -> consultarOpenRouter(normalizedPrompt)
+                        .flatMap(respuesta -> {
+                            existing.setPrompt(normalizedPrompt);
+                            existing.setRespuestaIa(respuesta);
+                            existing.setFecha(LocalDateTime.now());
+                            return repository.save(existing);
+                        })
+                );
+
+        Mono<IAResponse> nuevoMistral = consultarMistral(normalizedPrompt)
+                .flatMap(respuesta -> guardarRespuesta(MISTRAL_SOURCE, mistralModel, normalizedPrompt, respuesta));
+
+        return Flux.merge(actualizadoOpenRouter, nuevoMistral);
+    }
+
+    public Mono<Void> eliminarPorId(Long id) {
+        return repository.findById(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Registro no encontrado con id: " + id)))
+                .flatMap(repository::delete);
+    }
+
+    public Mono<Void> eliminarTodo() {
+        return repository.deleteAll();
     }
 }
