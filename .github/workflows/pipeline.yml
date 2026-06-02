@@ -20,15 +20,16 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Build + Test
+      - name: Build (skip tests)
         run: mvn clean install -DskipTests
 
       - name: SonarCloud Analysis
-        run: mvn sonar:sonar \
-          -Dsonar.projectKey=AlejandroCaycho_AS241S5_AEJ_07-be \
-          -Dsonar.organization=alejandrocaycho \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=AlejandroCaycho_AS241S5_AEJ_07-be \
+            -Dsonar.organization=alejandrocaycho \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Build Docker
         run: docker build -t carloscaycho/backend:latest .
