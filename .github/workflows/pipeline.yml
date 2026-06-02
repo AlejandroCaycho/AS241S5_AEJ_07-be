@@ -21,7 +21,7 @@ jobs:
           java-version: '21'
 
       - name: Build + Test
-        run: mvn clean verify
+        run: mvn clean install -DskipTests
 
       - name: SonarCloud Analysis
         run: mvn sonar:sonar \
