@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: reactive-app
+  r2dbc:
+    url: ${SPRING_R2DBC_URL}
+    username: ${SPRING_R2DBC_USERNAME}
+    password: ${SPRING_R2DBC_PASSWORD}
+    properties:
+      sslMode: REQUIRE
+
+api:
+  openrouter:
+    url: ${API_OPENROUTER_URL}
+    key: ${API_OPENROUTER_KEY}
+    model: ${API_OPENROUTER_MODEL}
+
+  mistral:
+    url: ${API_MISTRAL_URL}
+    key: ${API_MISTRAL_KEY}
+    model: ${API_MISTRAL_MODEL}
